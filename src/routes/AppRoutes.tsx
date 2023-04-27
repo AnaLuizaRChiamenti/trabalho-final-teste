@@ -5,6 +5,8 @@ import DefaultLayoutHome from '../config/layout/DefaultLayoutHome';
 
 import Cadastro from '../pages/Cadastro';
 import Login from '../pages/login';
+import Recados from '../pages/Recados';
+import DefaultLayout from '../config/layout/DefaultLayout';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -13,6 +15,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/" element={<DefaultLayoutHome component={Home} />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/cadastro" element={<Cadastro />} />
+                <Route path="/recados" element={<DefaultLayout component={Recados} />} />
             </Routes>
         </BrowserRouter>
     );

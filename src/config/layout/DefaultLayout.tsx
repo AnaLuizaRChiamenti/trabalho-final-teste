@@ -1,22 +1,24 @@
+import { Container, Grid } from '@mui/material';
 import React from 'react';
-import { Grid } from '@mui/material';
 import ResponsiveAppBar from '../../components/AppBarDefault';
 
 interface DefaultLayoutProps {
     component: React.FC;
 }
 
-const DefaultLayoutHome: React.FC<DefaultLayoutProps> = ({ component: Component }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ component: Component }) => {
     return (
-        <Grid container direction="column" style={{ height: '100vh' }}>
-            <Grid item>
+        <Grid container style={{ height: '100vh', maxWidth: '100vw' }}>
+            <Grid item xs={12}>
                 <ResponsiveAppBar />
+                {/*  /* emailUsuarioLogado={usuarioLogado.email} */}
             </Grid>
-            <Grid item xs>
+
+            <Grid item xs={12}>
                 <Component />
             </Grid>
         </Grid>
     );
 };
 
-export default DefaultLayoutHome;
+export default DefaultLayout;

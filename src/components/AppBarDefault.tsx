@@ -1,27 +1,19 @@
-import AdbIcon from '@mui/icons-material/Adb';
-import AddIcon from '@mui/icons-material/Add';
-import MenuIcon from '@mui/icons-material/Menu';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Fab from '@mui/material/Fab';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { styled } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['Recados', 'Favoritos'];
+const pages = ['Todos os Recados', 'Favoritos'];
 const settings = ['Sair'];
-
-/* interface ResponsiveAppBarProps {
-    emailUsuarioLogado: string;
-} */
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -42,28 +34,36 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
-    const StyledFab = styled(Fab)({
-        backgroundColor: '#FFC6D9',
-        marginLeft: '5%',
-        position: 'relative',
-        width: '40px',
-        height: '40px'
-    });
     return (
-        <AppBar position="static" sx={{ backgroundColor: '#FFF7AE' }}>
+        <AppBar position="fixed" sx={{ bgcolor: '#D7F2BA' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <StyledFab color="secondary" aria-label="add" sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <AddIcon />
-                    </StyledFab>
+                    <Typography
+                        variant="h5"
+                        noWrap
+                        component="a"
+                        href="/Recados"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'none', sm: 'flex', md: 'flex' },
+                            fontFamily: 'inter',
+                            fontWeight: 32,
+                            letterSpacing: '.2rem',
+                            color: 'black',
+                            textDecoration: 'none'
+                        }}
+                    >
+                        Recados
+                    </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '20%' }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
+                            color="inherit"
                         >
                             <MenuIcon />
                         </IconButton>
@@ -92,7 +92,6 @@ function ResponsiveAppBar() {
                             ))}
                         </Menu>
                     </Box>
-
                     <Typography
                         variant="h5"
                         noWrap
@@ -109,43 +108,27 @@ function ResponsiveAppBar() {
                             textDecoration: 'none'
                         }}
                     >
-                        {/*                         {emailUsuarioLogado}
-                         */}
+                        Seus recados
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: { xs: 'none', md: 'flex' },
+                            justifyContent: 'flex-end',
+                            marginRight: '15px'
+                        }}
+                    >
                         {pages.map(page => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: 'black',
-                                    display: 'block',
-                                    marginLeft: '5%',
-                                    bgcolor: '#FFC6D9'
-                                }}
+                                sx={{ my: 2, color: 'black', display: 'block' }}
                             >
                                 {page}
                             </Button>
                         ))}
                     </Box>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none'
-                        }}
-                    >
-                        {/* {emailUsuarioLogado} */}
-                    </Typography>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
