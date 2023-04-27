@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home';
 import DefaultLayoutHome from '../config/layout/DefaultLayoutHome';
-import Login from '../pages/Login';
+
 import Cadastro from '../pages/Cadastro';
+import Login from '../pages/login';
 
 const AppRoutes: React.FC = () => {
     return (
