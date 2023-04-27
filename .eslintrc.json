@@ -1,79 +1,40 @@
 {
     "env": {
         "browser": true,
-        "es2021": true,
-        "jest": true
+        "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
-        "airbnb",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "plugin:prettier/recommended"
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "overrides": [
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
+        "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint", "eslint-plugin-import-helpers", "prettier"],
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
     "rules": {
-        "react/no-unescaped-entities": "off",
-        "react/function-component-definition": "off",
-        "react/require-default-props": "off",
-        "react/jsx-no-useless-fragment": "off",
-        "no-param-reassign": "off",
-        "import/no-extraneous-dependencies": "off",
-        "no-case-declarations": "off",
-        "no-useless-escape": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "no-alert": "off",
-        "camelcase": "off",
-        "import/no-unresolved": "error",
-        "class-methods-use-this": "off",
-        "import/prefer-default-export": "off",
-        "no-shadow": "off",
-        "no-console": "off",
-        "no-useless-constructor": "off",
-        "no-empty-function": "off",
-        "lines-between-class-members": "off",
-        "import/extensions": [
+        "indent": [
             "error",
-            "ignorePackages",
-            {
-                "ts": "never",
-                "tsx": "never"
-            }
+            4
         ],
-        "import-helpers/order-imports": [
-            "warn",
-            {
-                "newlinesBetween": "always",
-                "groups": ["module", "/^@shared/", ["parent", "sibling", "index"]],
-                "alphabetize": {
-                    "order": "asc",
-                    "ignoreCase": true
-                }
-            }
+        "linebreak-style": [
+            "error",
+            "unix"
         ],
-        "prettier/prettier": "error",
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".jsx", ".tsx"]
-            }
+        "quotes": [
+            "error",
+            "single"
         ],
-        "react/react-in-jsx-scope": "off",
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "@typescript-eslint/naming-convention": "off"
-    },
-    "settings": {
-        "import/resolver": {
-            "typescript": {}
-        }
+        "semi": [
+            "error",
+            "always"
+        ]
     }
 }
