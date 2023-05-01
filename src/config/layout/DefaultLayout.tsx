@@ -8,7 +8,7 @@ interface DefaultLayoutProps {
 
 const DefaultLayout: React.FC<DefaultLayoutProps> = ({ component: Component }) => {
     return (
-        <Grid container style={{ height: '100vh', maxWidth: '100vw' }}>
+        <Grid container style={{ maxWidth: '100vw' }}>
             <Grid item xs={12}>
                 <ResponsiveAppBar />
                 {/*  /* emailUsuarioLogado={usuarioLogado.email} */}

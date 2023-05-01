@@ -1,8 +1,9 @@
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Grid, Box, Avatar, Typography, TextField, Button, Link } from '@mui/material';
+import { Grid, Box, Avatar, Typography } from '@mui/material';
 import React from 'react';
 
 import checkImage from '../images/checkImage.png';
+import Form from '../components/Form';
 
 const Cadastro: React.FC = () => {
     const styleForm = {
@@ -24,38 +25,7 @@ const Cadastro: React.FC = () => {
                     <Typography variant="h4" margin={2} color="black">
                         Faça seu cadastro
                     </Typography>
-
-                    <Box component="form" sx={{ marginRight: 2, marginLeft: 2 }}>
-                        <TextField margin="normal" type="email" id="email" label="Email" fullWidth />
-                        <TextField margin="normal" type="password" id="senha" label="Senha" fullWidth />
-                        <TextField margin="normal" type="password" id="repetirSenha" label="Repetir Senha" fullWidth />
-                    </Box>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            mb: 2,
-                            mt: 2,
-                            padding: '5px',
-                            borderRadius: '5px',
-                            width: '50%',
-                            backgroundColor: '#D0A8E4',
-                            color: 'black',
-                            '&:hover': {
-                                backgroundColor: '#D0A8E4',
-                                boxShadow: 'none'
-                            }
-                        }}
-                    >
-                        Cadastrar
-                    </Button>
-                    <Grid container justifyContent="center">
-                        <Grid item>
-                            <Link href="/" variant="body2">
-                                Ja tem uma conta? Faça o login!
-                            </Link>
-                        </Grid>
-                    </Grid>
+                    <Form modo="cadastro" botaoSubmit="Criar conta" />
                 </Box>
             </Grid>
 

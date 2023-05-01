@@ -11,15 +11,24 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import notepad from '../images/notepad.png';
+import { useNavigate } from 'react-router-dom';
 
 const pages = ['Login', 'Cadastro'];
 
 function ResponsiveAppBarHome() {
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
 
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
+
+    function handleLogin() {
+        navigate('/login');
+    }
+    function handleCadastro() {
+        navigate('/cadastro');
+    }
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
@@ -90,11 +99,34 @@ function ResponsiveAppBarHome() {
                                 display: { xs: 'block', md: 'none' }
                             }}
                         >
-                            {pages.map(page => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu} sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <Button
+                                    onClick={handleLogin}
+                                    sx={{
+                                        my: 2,
+                                        color: 'black',
+                                        marginLeft: '15px',
+                                        fontFamily: 'inter',
+                                        fontWeight: 500,
+                                        fontSize: '16px'
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    onClick={handleCadastro}
+                                    sx={{
+                                        my: 2,
+                                        color: 'black',
+                                        marginLeft: '15px',
+                                        fontFamily: 'inter',
+                                        fontWeight: 500,
+                                        fontSize: '16px'
+                                    }}
+                                >
+                                    Cadastro
+                                </Button>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -116,25 +148,38 @@ function ResponsiveAppBarHome() {
                         Recados
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', md: 'flex' }, justifyContent: 'end' }}>
-                        {pages.map(page => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{
-                                    my: 2,
-                                    color: 'black',
-                                    display: 'block',
-                                    bgcolor: '#D0A8E4',
-                                    borderRadius: '5px',
-                                    marginLeft: '15px',
-                                    fontFamily: 'inter',
-                                    fontWeight: 500,
-                                    fontSize: '16px'
-                                }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={handleLogin}
+                            sx={{
+                                my: 2,
+                                color: 'black',
+                                display: 'block',
+                                bgcolor: '#D0A8E4',
+                                borderRadius: '5px',
+                                marginLeft: '15px',
+                                fontFamily: 'inter',
+                                fontWeight: 500,
+                                fontSize: '16px'
+                            }}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            onClick={handleCadastro}
+                            sx={{
+                                my: 2,
+                                color: 'black',
+                                display: 'block',
+                                bgcolor: '#D0A8E4',
+                                borderRadius: '5px',
+                                marginLeft: '15px',
+                                fontFamily: 'inter',
+                                fontWeight: 500,
+                                fontSize: '16px'
+                            }}
+                        >
+                            Cadastro
+                        </Button>
                     </Box>
                 </Toolbar>
             </Container>
