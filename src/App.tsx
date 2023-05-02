@@ -1,9 +1,9 @@
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
 import { CssBaseline } from '@mui/material';
+import { persistor, store } from './store/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from './store/store';
 
 function App() {
     return (
