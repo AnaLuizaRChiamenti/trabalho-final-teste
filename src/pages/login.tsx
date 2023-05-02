@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 
 import checkImage from '../images/checkImage.png';
 import Form from '../components/Form';
-import { useAppSelector } from '../store/hook';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -19,13 +18,7 @@ const Login: React.FC = () => {
         height: '100%',
         bgcolor: 'white'
     };
-    const lembrarUsuario = useAppSelector(state => state.usuarioLogado.usuario);
-    /*     useEffect(() => {
-        if (!(lembrarUsuario.email === '')) {
-            navigate('/recados');
-        }
-    }, [navigate]);
- */
+
     return (
         <Grid container height="100vh" width="100vw" bgcolor="#D7F2BA">
             <Grid

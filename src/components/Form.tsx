@@ -1,16 +1,15 @@
 import { Link } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hook';
 import { useNavigate } from 'react-router-dom';
-import { SelecionarTodosUsuarios, addUsuarios } from '../store/modules/usuariosSlice';
+import { useAppSelector } from '../store/hooks';
+import { addUser, selectAllUsers } from '../store/modules/usuariosSlice';
 import usuarioType from '../types/usuariosType';
-import { usuarioLogadoSlice } from '../store/modules/usuarioLogadoSlice';
+import { useDispatch } from 'react-redux';
+import { setUsuarioLogado } from '../store/modules/usuarioLogadoSlice';
 
 interface FormProps {
     modo: 'login' | 'cadastro';
@@ -26,23 +25,25 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
     const [erroReSenha, setErroReSenha] = useState(false);
     const [disabled, setDisable] = useState(false);
 
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    const [usuario, setUsuario] = useState<usuarioType>();
+    const usuarios = useAppSelector(selectAllUsers);
 
-    const usuarios = useAppSelector(SelecionarTodosUsuarios);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (modo === 'cadastro') {
-            const emailValido = email.endsWith('.com') || (email.endsWith('.com.br') && email.includes('@'));
-            const reSenhaValida = senha === reSenha;
-            const senhaValida = senha.length >= 6;
+            const emailValido = (email.endsWith('.com') || email.endsWith('.com.br')) && email.includes('@');
 
             if (email.length > 0) {
                 setErroEmail(!emailValido);
             }
+            const senhaValida = senha.length >= 6;
             if (senha.length > 0) {
                 setErroSenha(!senhaValida);
             }
+
+            const reSenhaValida = senha === reSenha;
             if (reSenha.length > 0) {
                 setErroReSenha(!reSenhaValida);
             }
@@ -51,47 +52,46 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
         }
     }, [email, senha, reSenha, modo]);
 
-    const handleLogin = (ev: React.FormEvent<HTMLFormElement>) => {
-        ev.preventDefault();
+    useEffect(() => {
+        localStorage.setItem('listaUsuarios', JSON.stringify(usuarios));
+    }, [usuarios]);
 
-        const usuario = usuarios.find(user => user.email === email && user.senha === senha);
+    function handleSubmit(evento: React.FormEvent<HTMLFormElement>) {
+        evento.preventDefault();
 
-        if (usuario) {
-            dispatch(usuarioLogadoSlice.actions.setUsuarioLogado(usuario));
-            alert(`Bem-vindo, ${usuario.email}!`);
-            navigate('/recados');
-        } else {
-            alert('Usuário não encontrado ou senha incorreta.');
-        }
-    };
+        if (modo === 'login') {
+            const usuarioEncontrado = usuarios.find(usuario => usuario.email === email && usuario.senha === senha);
 
-    const handleCadastro = (ev: React.FormEvent<HTMLFormElement>) => {
-        ev.preventDefault();
-
-        if (usuarios.some(u => u.email === email)) {
-            alert('Esse email já está em uso. Escolha outro email.');
-            return;
-        } else if (usuarios.some(u => u.repetirSenha === senha)) {
-            alert('As senhas precisam ser iguais.');
-
-            return;
-        } else {
-            if (modo === 'cadastro') {
-                const novoUsuario: usuarioType = {
-                    email,
-                    senha,
-                    repetirSenha: reSenha,
-                    recados: []
-                };
-                dispatch(addUsuarios(novoUsuario));
-                alert('Cadastro realizado com sucesso! Faça o login.');
-                navigate('/login');
+            if (!usuarioEncontrado) {
+                alert('E-mail ou senha inválidos!');
+                return;
             }
-        }
-        console.log(usuarios);
-    };
+            dispatch(
+                setUsuarioLogado({
+                    email: usuarioEncontrado.email,
+                    senha: usuarioEncontrado.senha,
+                    recados: usuarioEncontrado.recados
+                })
+            );
 
-    const handleSubmit = modo === 'login' ? handleLogin : handleCadastro;
+            navigate('/Recados');
+        } else {
+            const novoUsuario = {
+                email,
+                senha,
+                recados: []
+            };
+
+            const retorno = usuarios.some(value => value.email === novoUsuario.email);
+
+            if (retorno) {
+                alert('Esse e-mail já está cadastrado por outro usuário');
+                return;
+            }
+
+            dispatch(addUser(novoUsuario));
+        }
+    }
 
     return (
         <Box
@@ -104,6 +104,8 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
             sx={{ marginRight: 2, marginLeft: 2 }}
         >
             <TextField
+                error={erroEmail}
+                helperText={erroEmail ? 'Email inválido' : ''}
                 margin="normal"
                 type="email"
                 id="email"
@@ -116,6 +118,8 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
                 fullWidth
             />
             <TextField
+                error={erroSenha}
+                helperText={erroSenha ? 'Senha deve conter ao menos 6 caracteres' : ''}
                 margin="normal"
                 type="password"
                 id="senha"
@@ -128,6 +132,7 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
 
             {modo === 'cadastro' && (
                 <TextField
+                    error={erroReSenha}
                     margin="normal"
                     type="password"
                     id="ReSenha"
@@ -139,14 +144,8 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
                 />
             )}
 
-            {modo === 'login' && (
-                <FormControlLabel
-                    sx={{ alignSelf: 'start', width: '100%' }}
-                    control={<Checkbox />}
-                    label="Permanecer conectado"
-                />
-            )}
             <Button
+                disabled={disabled}
                 variant="contained"
                 type="submit"
                 sx={{

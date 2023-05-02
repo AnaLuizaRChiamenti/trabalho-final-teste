@@ -5,16 +5,15 @@ interface UsuarioState {
     usuario: usuarioType;
 }
 const initialState: UsuarioState = {
-    usuario: { email: '', senha: '', repetirSenha: '', recados: [] }
+    usuario: { email: '', senha: '', recados: [] }
 };
 export const usuarioLogadoSlice = createSlice({
-    name: 'lembrarUsuario',
+    name: 'usuarioLogado',
     initialState,
     reducers: {
         setUsuarioLogado: (state, action: PayloadAction<usuarioType>) => {
             state.usuario.email = action.payload.email;
             state.usuario.senha = action.payload.senha;
-            state.usuario.repetirSenha = action.payload.repetirSenha;
             state.usuario.recados.push(...action.payload.recados);
         }
     }

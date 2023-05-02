@@ -6,91 +6,86 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import AddIcon from '@mui/icons-material/Add';
-
 import * as React from 'react';
+import ModalInputs from '../components/modalAddInput';
+import { SelectAllRecados } from '../store/modules/recadosSlice';
+import { useAppSelector } from '../store/hooks';
 
-export default function Recados() {
+const Recados: React.FC = () => {
+    const [openAdd, setOpenAdd] = React.useState(false);
+    const recadosLista = useAppSelector(SelectAllRecados);
+
+    const handleClose = () => {
+        setOpenAdd(false);
+    };
+    const addRecados = () => {
+        setOpenAdd(false);
+    };
+    const openModalImput = () => {
+        setOpenAdd(true);
+    };
     return (
-        <Grid container width="100%" height="100vh" bgcolor="#FFE1C6">
-            <Grid item width="100%" sx={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
-                <Grid container spacing={2} width="100%">
-                    <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex' }}>
-                        <Card
-                            sx={{
-                                margin: '15px',
-                                maxWidth: 300,
-                                boxShadow:
-                                    '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2);'
-                            }}
-                        >
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Recado
-                                </Typography>
+        <Grid container sx={{ width: '100%', height: '100vh' }} bgcolor="#D7F2BA">
+            <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Grid container spacing={2} justifyContent="center" alignItems="center">
+                    <Grid item>
+                        {recadosLista.map(recados => (
+                            <Grid item key={recados?.id}>
+                                <Card
+                                    sx={{
+                                        maxWidth: 300,
+                                        boxShadow:
+                                            '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2);'
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            {recados.recado}
+                                        </Typography>
 
-                                <Typography variant="body2" color="text.secondary">
-                                    Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                                    ranging across all continents except Antarctica
-                                </Typography>
-                            </CardContent>
-                            <CardActions sx={{ display: 'flex' }}>
-                                <IconButton aria-label="favorite">
-                                    <FavoriteIcon />
-                                </IconButton>
-                                <IconButton aria-label="edit">
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton aria-label="delete">
-                                    <DeleteIcon />
-                                </IconButton>
-                            </CardActions>
-                        </Card>
-                        <Card
-                            sx={{
-                                margin: '15px',
-                                maxWidth: 300,
-                                boxShadow:
-                                    '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2);'
-                            }}
-                        >
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Recado
-                                </Typography>
-
-                                <Typography variant="body2" color="text.secondary">
-                                    Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                                    ranging across all continents except Antarctica
-                                </Typography>
-                            </CardContent>
-                            <CardActions sx={{ display: 'flex' }}>
-                                <IconButton aria-label="favorite">
-                                    <FavoriteIcon />
-                                </IconButton>
-                                <IconButton aria-label="edit">
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton aria-label="delete">
-                                    <DeleteIcon />
-                                </IconButton>
-                            </CardActions>
-                        </Card>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {recados.descricao}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions sx={{ display: 'flex' }}>
+                                        <IconButton aria-label="favorite">
+                                            <FavoriteIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="edit">
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="delete">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
                     </Grid>
                 </Grid>
                 <Fab
-                    size="medium"
-                    color="secondary"
+                    onClick={openModalImput}
+                    color="info"
                     aria-label="add"
                     sx={{
-                        position: 'fixed',
-                        bottom: '24px',
-                        right: '24px',
-                        display: 'flex'
+                        position: 'absolute',
+                        right: '20px',
+                        bottom: '20px',
+                        bgcolor: '#222'
                     }}
                 >
                     <AddIcon />
                 </Fab>
-            </Grid>
+                <ModalInputs
+                    recado="Adicionar"
+                    descricao="Escreva o recado aqui bçabçla"
+                    openModal={openAdd}
+                    actionConfirm={addRecados}
+                    actionCancel={handleClose}
+                />
+            </Box>
         </Grid>
     );
-}
+};
+
+export default Recados;
