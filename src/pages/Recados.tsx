@@ -9,11 +9,15 @@ import AddIcon from '@mui/icons-material/Add';
 import * as React from 'react';
 import ModalInputs from '../components/modalAddInput';
 import { SelectAllRecados } from '../store/modules/recadosSlice';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useEffect } from 'react';
 
 const Recados: React.FC = () => {
     const [openAdd, setOpenAdd] = React.useState(false);
+
     const recadosLista = useAppSelector(SelectAllRecados);
+
+    const dispatch = useAppDispatch();
 
     const handleClose = () => {
         setOpenAdd(false);
@@ -76,13 +80,7 @@ const Recados: React.FC = () => {
                 >
                     <AddIcon />
                 </Fab>
-                <ModalInputs
-                    recado="Adicionar"
-                    descricao="Escreva o recado aqui bçabçla"
-                    openModal={openAdd}
-                    actionConfirm={addRecados}
-                    actionCancel={handleClose}
-                />
+                <ModalInputs openModal={openAdd} actionConfirm={addRecados} actionCancel={handleClose} />
             </Box>
         </Grid>
     );

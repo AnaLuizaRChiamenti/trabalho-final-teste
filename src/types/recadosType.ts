@@ -1,5 +1,5 @@
 type RecadoType = {
-    id: number;
+    id: string;
     recado: string;
     descricao: string;
 };

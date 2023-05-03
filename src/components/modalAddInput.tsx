@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,43 +9,54 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
 import RecadoType from '../types/recadosType';
 import { addRecado } from '../store/modules/recadosSlice';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { addNewTask, deleteTask } from '../store/modules/usuarioLogadoSlice';
+import { updateUser } from '../store/modules/usuariosSlice';
+import usuarioType from '../types/usuariosType';
 
 interface ModalInputsProps {
-    recado: string;
-    descricao: string;
     openModal: boolean;
     actionConfirm: () => void;
     actionCancel: () => void;
 }
 
-const ModalInputs: React.FC<ModalInputsProps> = ({ recado, descricao, openModal, actionCancel, actionConfirm }) => {
-    const [recadoTitulo, setRecado] = useState<string>('');
-    const [recadoDescricao, setRecadoDescicao] = useState<string>('');
+const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, actionConfirm }) => {
+    const [recado, setRecado] = React.useState({} as RecadoType);
+    const usuarioLogado = useAppSelector(state => state.usuarioLogado.usuario);
 
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(updateUser({ id: usuarioLogado.email, changes: usuarioLogado }));
+    }, [usuarioLogado]);
 
     const handleClose = () => {
         actionCancel();
     };
 
+    const handleChange = (ev: { target: { name: string; value: string } }) => {
+        setRecado(state => ({ ...state, [ev.target.name]: ev.target.value }));
+    };
+
     const handleConfirm = () => {
-        const novoRecado: RecadoType = {
-            id: Date.now(),
-            recado: recadoTitulo,
-            descricao: recadoDescricao
-        };
-        dispatch(addRecado(novoRecado));
+        dispatch(
+            addNewTask({
+                ...recado,
+                id: `${Date.now()}`
+            })
+        );
         actionConfirm();
-        setRecado('');
-        setRecadoDescicao('');
+    };
+
+    const handleDelete = (item: RecadoType) => {
+        dispatch(deleteTask(item.id));
     };
     return (
         <Box>
             <Dialog open={openModal} onClose={handleClose}>
-                <DialogTitle>{recado}</DialogTitle>
+                <DialogTitle>{recado.recado}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{descricao}</DialogContentText>
+                    <DialogContentText>{recado.descricao}</DialogContentText>
                     <TextField
                         sx={{
                             '& label.Mui-focused': {
@@ -57,24 +68,26 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ recado, descricao, openModal,
                                 }
                             }
                         }}
-                        value={recadoTitulo}
+                        value={recado.recado}
                         autoFocus
                         margin="dense"
                         id="recado"
+                        name="recado"
                         label="Titulo do recado"
                         type={'text'}
-                        onChange={ev => setRecado(ev.target.value)}
+                        onChange={handleChange}
                         fullWidth
                         variant="standard"
                     />
                     <TextField
-                        value={recadoDescricao}
+                        value={recado.descricao}
                         autoFocus
                         margin="dense"
                         id="descricao"
+                        name="descricao"
                         label="Descrição do recado"
                         type={'text'}
-                        onChange={ev => setRecadoDescicao(ev.target.value)}
+                        onChange={handleChange}
                         fullWidth
                         variant="standard"
                         sx={{ hover: 'false' }}

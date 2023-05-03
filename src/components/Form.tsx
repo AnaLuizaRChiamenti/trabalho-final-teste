@@ -9,7 +9,7 @@ import { useAppSelector } from '../store/hooks';
 import { addUser, selectAllUsers } from '../store/modules/usuariosSlice';
 import usuarioType from '../types/usuariosType';
 import { useDispatch } from 'react-redux';
-import { setUsuarioLogado } from '../store/modules/usuarioLogadoSlice';
+import { setUser, usuarioLogadoSlice } from '../store/modules/usuarioLogadoSlice';
 
 interface FormProps {
     modo: 'login' | 'cadastro';
@@ -67,7 +67,7 @@ const Form: React.FC<FormProps> = ({ modo, botaoSubmit }) => {
                 return;
             }
             dispatch(
-                setUsuarioLogado({
+                setUser({
                     email: usuarioEncontrado.email,
                     senha: usuarioEncontrado.senha,
                     recados: usuarioEncontrado.recados
