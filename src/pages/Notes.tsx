@@ -8,32 +8,32 @@ import CardContent from '@mui/material/CardContent';
 import AddIcon from '@mui/icons-material/Add';
 import * as React from 'react';
 import ModalInputs from '../components/modalAddInput';
-import { SelectAllRecados } from '../store/modules/recadosSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { useEffect } from 'react';
+import ResponsiveAppBar from '../components/ResponsiveAppBar';
 
-const Recados: React.FC = () => {
+const Notes: React.FC = () => {
     const [openAdd, setOpenAdd] = React.useState(false);
-
-    const recadosLista = useAppSelector(SelectAllRecados);
+    const listTaks = useAppSelector(state => state.user.userLogged.tasks);
 
     const dispatch = useAppDispatch();
 
     const handleClose = () => {
         setOpenAdd(false);
     };
-    const addRecados = () => {
+    const addNotes = () => {
         setOpenAdd(false);
     };
     const openModalImput = () => {
         setOpenAdd(true);
     };
+
     return (
-        <Grid container sx={{ width: '100%', height: '100vh' }} bgcolor="#D7F2BA">
+        <Grid container sx={{ width: '100%', height: '100vh' }}>
+            <ResponsiveAppBar />
             <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     <Grid item>
-                        {recadosLista.map(recados => (
+                        {listTaks.map(recados => (
                             <Grid item key={recados?.id}>
                                 <Card
                                     sx={{
@@ -44,11 +44,11 @@ const Recados: React.FC = () => {
                                 >
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {recados.recado}
+                                            {recados.title}
                                         </Typography>
 
                                         <Typography variant="body2" color="text.secondary">
-                                            {recados.descricao}
+                                            {recados.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions sx={{ display: 'flex' }}>
@@ -80,10 +80,10 @@ const Recados: React.FC = () => {
                 >
                     <AddIcon />
                 </Fab>
-                <ModalInputs openModal={openAdd} actionConfirm={addRecados} actionCancel={handleClose} />
+                <ModalInputs openModal={openAdd} actionConfirm={addNotes} actionCancel={handleClose} />
             </Box>
         </Grid>
     );
 };
 
-export default Recados;
+export default Notes;

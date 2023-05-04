@@ -5,7 +5,7 @@ import React from 'react';
 import checkImage from '../images/checkImage.png';
 import Form from '../components/Form';
 
-const Cadastro: React.FC = () => {
+const Signup: React.FC = () => {
     const styleForm = {
         display: 'flex',
         alignItems: 'center',
@@ -25,7 +25,7 @@ const Cadastro: React.FC = () => {
                     <Typography variant="h4" margin={2} color="black">
                         Faça seu cadastro
                     </Typography>
-                    <Form modo="cadastro" botaoSubmit="Criar conta" />
+                    <Form mode="signup" textButton="Criar conta" />
                 </Box>
             </Grid>
 
@@ -46,4 +46,4 @@ const Cadastro: React.FC = () => {
     );
 };
 
-export default Cadastro;
+export default Signup;

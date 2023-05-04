@@ -13,8 +13,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import notepad from '../images/notepad.png';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Login', 'Cadastro'];
-
 function ResponsiveAppBarHome() {
     const navigate = useNavigate();
 
@@ -24,10 +22,10 @@ function ResponsiveAppBarHome() {
     };
 
     function handleLogin() {
-        navigate('/login');
+        navigate('/signin');
     }
     function handleCadastro() {
-        navigate('/cadastro');
+        navigate('/signup');
     }
 
     const handleCloseNavMenu = () => {

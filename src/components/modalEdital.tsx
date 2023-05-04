@@ -42,6 +42,7 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
                 id: Date.now()
             })
         );
+
         actionConfirm();
     };
 

@@ -1,14 +1,11 @@
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import checkImage from '../images/checkImage.png';
 import Form from '../components/Form';
-import { useNavigate } from 'react-router-dom';
 
-const Login: React.FC = () => {
-    const navigate = useNavigate();
-
+const Signin: React.FC = () => {
     const styleForm = {
         display: 'flex',
         alignItems: 'center',
@@ -43,11 +40,11 @@ const Login: React.FC = () => {
                     <Typography variant="h4" margin={2} color="black">
                         Faça seu login
                     </Typography>
-                    <Form modo="login" botaoSubmit="Login" />
+                    <Form mode="signin" textButton="Login" />
                 </Box>
             </Grid>
         </Grid>
     );
 };
 
-export default Login;
+export default Signin;
