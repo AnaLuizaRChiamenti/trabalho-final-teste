@@ -42,6 +42,11 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
                 id: Date.now()
             })
         );
+        setTask({
+            id: 0,
+            title: '',
+            description: ''
+        });
         actionConfirm();
     };
 
@@ -80,7 +85,7 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
                         label="Descrição do recado"
                         type={'text'}
                         fullWidth
-                        name="descripition"
+                        name="description"
                         onChange={handleChange}
                         value={task.description}
                         variant="standard"

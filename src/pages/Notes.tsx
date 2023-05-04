@@ -18,6 +18,7 @@ const Notes: React.FC = () => {
     const [openAdd, setOpenAdd] = React.useState(false);
     const [openModalEdit, setOpenModalEdit] = React.useState(false);
     const listTaks = useAppSelector(state => state.user.userLogged.tasks);
+    const [editedTaks, setEditedTaks] = React.useState<taskType>({} as taskType);
 
     const dispatch = useAppDispatch();
 
@@ -36,7 +37,7 @@ const Notes: React.FC = () => {
     };
 
     const handleEdit = (item: taskType) => {
-        console.log(openModalEdit);
+        setEditedTaks(item);
 
         setOpenModalEdit(true);
     };
@@ -52,7 +53,7 @@ const Notes: React.FC = () => {
     return (
         <Grid container sx={{ width: '100%', height: '100vh' }}>
             <ResponsiveAppBar />
-            <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }} paddingTop="4.5rem">
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     <Grid item>
                         {listTaks.map(note => (
@@ -85,24 +86,24 @@ const Notes: React.FC = () => {
                                         </IconButton>
                                     </CardActions>
                                 </Card>
-                                {openModalEdit && (
-                                    <ModalInputsEdit
-                                        openModal={openModalEdit}
-                                        actionConfirm={addNotesEdit}
-                                        actionCancel={handleCloseEdit}
-                                        task={note}
-                                    />
-                                )}
                             </Grid>
                         ))}
                     </Grid>
+                    {openModalEdit && (
+                        <ModalInputsEdit
+                            openModal={openModalEdit}
+                            actionConfirm={addNotesEdit}
+                            actionCancel={handleCloseEdit}
+                            task={editedTaks}
+                        />
+                    )}
                 </Grid>
                 <Fab
                     onClick={openModalImput}
                     color="info"
                     aria-label="add"
                     sx={{
-                        position: 'absolute',
+                        position: 'fixed',
                         right: '20px',
                         bottom: '20px',
                         bgcolor: '#222'

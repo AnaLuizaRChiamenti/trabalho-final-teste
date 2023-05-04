@@ -32,9 +32,6 @@ const ModalInputsEdit: React.FC<ModalInputsProps> = ({ openModal, actionCancel, 
     };
 
     const handleConfirm = () => {
-        console.log(editedTask);
-        console.log(task);
-
         dispatch(updateTask(editedTask));
         actionConfirm();
     };
