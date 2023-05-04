@@ -82,7 +82,7 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
         }
     }
     return (
-        <Box component="form" marginTop={1} onSubmit={ev => handleSubmit(ev)}>
+        <Box component="form" marginTop={1} onSubmit={ev => handleSubmit(ev)} margin={2}>
             <TextField
                 error={errorEmail}
                 helperText={errorEmail ? 'E-mail inválido' : ''}

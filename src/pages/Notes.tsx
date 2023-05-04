@@ -10,9 +10,13 @@ import * as React from 'react';
 import ModalInputs from '../components/modalAddInput';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import ResponsiveAppBar from '../components/ResponsiveAppBar';
+import taskType from '../types/taskType';
+import { deleteTask, updateTask } from '../store/modules/UserLoggedSlice';
+import ModalInputsEdit from '../components/modalEdital';
 
 const Notes: React.FC = () => {
     const [openAdd, setOpenAdd] = React.useState(false);
+    const [openModalEdit, setOpenModalEdit] = React.useState(false);
     const listTaks = useAppSelector(state => state.user.userLogged.tasks);
 
     const dispatch = useAppDispatch();
@@ -27,14 +31,32 @@ const Notes: React.FC = () => {
         setOpenAdd(true);
     };
 
+    const handleDelete = (item: taskType) => {
+        dispatch(deleteTask(item.id));
+    };
+
+    const handleEdit = (item: taskType) => {
+        console.log(openModalEdit);
+
+        setOpenModalEdit(true);
+    };
+
+    const handleCloseEdit = () => {
+        setOpenModalEdit(false);
+    };
+
+    const addNotesEdit = () => {
+        setOpenModalEdit(false);
+    };
+
     return (
         <Grid container sx={{ width: '100%', height: '100vh' }}>
             <ResponsiveAppBar />
             <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     <Grid item>
-                        {listTaks.map(recados => (
-                            <Grid item key={recados?.id}>
+                        {listTaks.map(note => (
+                            <Grid item key={note?.id}>
                                 <Card
                                     sx={{
                                         maxWidth: 300,
@@ -44,25 +66,33 @@ const Notes: React.FC = () => {
                                 >
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {recados.title}
+                                            {note.title}
                                         </Typography>
 
                                         <Typography variant="body2" color="text.secondary">
-                                            {recados.description}
+                                            {note.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions sx={{ display: 'flex' }}>
                                         <IconButton aria-label="favorite">
                                             <FavoriteIcon />
                                         </IconButton>
-                                        <IconButton aria-label="edit">
+                                        <IconButton onClick={() => handleEdit(note)}>
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton aria-label="delete">
+                                        <IconButton onClick={() => handleDelete(note)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </CardActions>
                                 </Card>
+                                {openModalEdit && (
+                                    <ModalInputsEdit
+                                        openModal={openModalEdit}
+                                        actionConfirm={addNotesEdit}
+                                        actionCancel={handleCloseEdit}
+                                        task={note}
+                                    />
+                                )}
                             </Grid>
                         ))}
                     </Grid>

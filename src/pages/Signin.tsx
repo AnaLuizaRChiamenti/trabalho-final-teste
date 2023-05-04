@@ -32,7 +32,7 @@ const Signin: React.FC = () => {
                 <Box component="img" alt="Desenho-menina-marcando-um-botao-check" src={checkImage} width="70%" />
             </Grid>
 
-            <Grid item md={5} sm={12} xs={12} alignItems="center" justifyContent="center" boxShadow={5}>
+            <Grid item md={5} sm={12} xs={12} display="flex" alignItems="center" justifyContent="center" boxShadow={5}>
                 <Box sx={styleForm}>
                     <Avatar sx={{ bgcolor: '#D0A8E4' }}>
                         <LockOpenIcon />

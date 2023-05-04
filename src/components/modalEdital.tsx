@@ -4,23 +4,23 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { updateUser } from '../store/modules/UsersSlice';
-import { addNewTask } from '../store/modules/UserLoggedSlice';
+import { updateTask } from '../store/modules/UserLoggedSlice';
 import taskType from '../types/taskType';
 
 interface ModalInputsProps {
     openModal: boolean;
     actionConfirm: () => void;
     actionCancel: () => void;
+    task: taskType;
 }
 
-const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, actionConfirm }) => {
+const ModalInputsEdit: React.FC<ModalInputsProps> = ({ openModal, actionCancel, actionConfirm, task }) => {
     const dispatch = useAppDispatch();
-    const [task, setTask] = React.useState({} as taskType);
+    const [editedTask, setEditedTask] = React.useState(task);
     const userLogged = useAppSelector(state => state.user.userLogged);
 
     useEffect(() => {
@@ -31,74 +31,49 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
         actionCancel();
     };
 
-    const handleChange = (ev: { target: { name: string; value: string } }) => {
-        setTask(state => ({ ...state, [ev.target.name]: ev.target.value }));
-    };
-
     const handleConfirm = () => {
-        dispatch(
-            addNewTask({
-                ...task,
-                id: Date.now()
-            })
-        );
+        console.log(editedTask);
+        console.log(task);
 
+        dispatch(updateTask(editedTask));
         actionConfirm();
     };
 
     return (
         <Box>
             <Dialog open={openModal} onClose={handleClose}>
-                <DialogTitle>Adicionar</DialogTitle>
+                <DialogTitle>Editar um recado:</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{'Adicione seu recado:'}</DialogContentText>
                     <TextField
-                        sx={{
-                            '& label.Mui-focused': {
-                                color: '#222'
-                            },
-                            ' & .MuiInputBase-input': {
-                                '&.Mui-focused fieldset': {
-                                    borderColor: '#222'
-                                }
-                            }
-                        }}
                         autoFocus
+                        value={editedTask.title}
                         margin="dense"
-                        id="titleTask"
-                        label="Titulo do recado"
-                        type={'text'}
+                        id="task"
+                        label="Tarefa"
+                        type="text"
                         fullWidth
-                        name="title"
-                        onChange={handleChange}
-                        value={task.title}
                         variant="standard"
+                        onChange={e => setEditedTask(state => ({ ...state, title: e.target.value }))}
                     />
                     <TextField
                         autoFocus
+                        value={editedTask.description}
                         margin="dense"
-                        id="descriptionTask"
-                        label="Descrição do recado"
-                        type={'text'}
+                        id="detail"
+                        label="Detalhamento"
+                        type="text"
                         fullWidth
-                        name="descripition"
-                        onChange={handleChange}
-                        value={task.description}
                         variant="standard"
-                        sx={{ hover: 'false' }}
+                        onChange={e => setEditedTask(state => ({ ...state, description: e.target.value }))}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{ color: '#222' }}>
-                        Cancelar
-                    </Button>
-                    <Button onClick={handleConfirm} sx={{ color: '#222' }}>
-                        Confirmar
-                    </Button>
+                    <Button onClick={handleClose}>Cancelar</Button>
+                    <Button onClick={handleConfirm}>Editar</Button>
                 </DialogActions>
             </Dialog>
         </Box>
     );
 };
 
-export default ModalInputs;
+export default ModalInputsEdit;
