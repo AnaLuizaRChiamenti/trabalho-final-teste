@@ -17,8 +17,6 @@ import { useDispatch } from 'react-redux';
 import routes from '../routes/routes';
 import { logout } from '../store/modules/UserLoggedSlice';
 
-const settings = ['Logout'];
-
 const ResponsiveAppBar: React.FC = () => {
     const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);

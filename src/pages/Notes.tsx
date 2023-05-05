@@ -1,6 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
     Grid,
     Box,
@@ -10,7 +9,6 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogContentText,
     Button,
     DialogActions
 } from '@mui/material';
