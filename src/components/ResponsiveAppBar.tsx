@@ -12,8 +12,10 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import routes from '../routes/routes';
+import { logout } from '../store/modules/UserLoggedSlice';
 
 const settings = ['Logout'];
 
@@ -21,6 +23,8 @@ const ResponsiveAppBar: React.FC = () => {
     const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const dispatch = useDispatch();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -36,6 +40,7 @@ const ResponsiveAppBar: React.FC = () => {
     };
 
     const handleCloseUserMenu = () => {
+        dispatch(logout());
         navigate('/');
     };
 
@@ -133,13 +138,11 @@ const ResponsiveAppBar: React.FC = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleClose}
                         >
-                            {settings.map(setting => (
-                                <MenuItem key={setting}>
-                                    <Typography onClick={handleCloseUserMenu} textAlign="center">
-                                        {setting}
-                                    </Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem>
+                                <Typography onClick={handleCloseUserMenu} textAlign="center">
+                                    Sair
+                                </Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
@@ -149,3 +152,6 @@ const ResponsiveAppBar: React.FC = () => {
 };
 
 export default ResponsiveAppBar;
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.');
+}

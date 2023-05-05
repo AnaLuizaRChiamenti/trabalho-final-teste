@@ -25,18 +25,27 @@ import ResponsiveAppBar from '../components/ResponsiveAppBar';
 import taskType from '../types/taskType';
 import { deleteTask } from '../store/modules/UserLoggedSlice';
 import ModalInputsEdit from '../components/modalEditar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Notes: React.FC = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openModalEdit, setOpenModalEdit] = useState(false);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState<taskType | null>(null);
+    const userLogged = useAppSelector(state => state.user.userLogged.email);
 
     const listTaks = useAppSelector(state => state.user.userLogged.tasks);
     const [editedTaks, setEditedTaks] = useState<taskType>({} as taskType);
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!userLogged) {
+            navigate('/');
+        }
+    }, []);
 
     const handleClose = () => {
         setOpenAdd(false);
