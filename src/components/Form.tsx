@@ -18,7 +18,8 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const [errorRepassword, setErrorRepassword] = useState(false);
-    const [alertVisible, setAlertVisible] = useState(false);
+    const [successAlertVisible, setSuccessAlertVisible] = useState(false);
+    const [successAlertVisibleEmail, setSuccessAlertVisibleEmail] = useState(false);
 
     const users = useAppSelector(selectAllUsers);
     const dispatch = useAppDispatch();
@@ -77,11 +78,12 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
 
             const retorno = users.some(value => value.email === newUser.email);
             if (retorno) {
-                alert('E-mail já cadastrado');
+                setSuccessAlertVisibleEmail(true);
                 return;
             }
 
             dispatch(addUser(newUser));
+            setSuccessAlertVisible(true);
         }
     }
     return (
@@ -143,6 +145,7 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
             <Button disabled={disabled} type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 2 }}>
                 {textButton}
             </Button>
+
             <Grid container>
                 <Grid item xs={8} textAlign="end">
                     {mode === 'signin' ? (
@@ -160,6 +163,16 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
                     )}
                 </Grid>
             </Grid>
+            {successAlertVisible && (
+                <Alert severity="success" sx={{ mt: 2 }} onClose={() => setSuccessAlertVisible(false)}>
+                    Conta criada com sucesso!
+                </Alert>
+            )}
+            {successAlertVisibleEmail && (
+                <Alert severity="warning" sx={{ mt: 2 }} onClose={() => setSuccessAlertVisibleEmail(false)}>
+                    Esse email ja está em uso!
+                </Alert>
+            )}
         </Box>
     );
 };
