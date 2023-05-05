@@ -11,8 +11,8 @@ import ModalInputs from '../components/modalAddInput';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import ResponsiveAppBar from '../components/ResponsiveAppBar';
 import taskType from '../types/taskType';
-import { deleteTask, updateTask } from '../store/modules/UserLoggedSlice';
-import ModalInputsEdit from '../components/modalEdital';
+import { deleteTask } from '../store/modules/UserLoggedSlice';
+import ModalInputsEdit from '../components/modalEditar';
 
 const Notes: React.FC = () => {
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -54,15 +54,16 @@ const Notes: React.FC = () => {
         <Grid container sx={{ width: '100%', height: '100vh' }}>
             <ResponsiveAppBar />
             <Box width="100%" height="100%" sx={{ display: 'flex', justifyContent: 'center' }} paddingTop="4.5rem">
-                <Grid container spacing={2} justifyContent="center" alignItems="center">
-                    <Grid item>
+                <Grid container width="100%" justifyContent="center" marginTop="15px">
+                    <Grid container width="100%">
                         {listTaks.map(note => (
-                            <Grid item key={note?.id}>
+                            <Grid item display="flex" flexDirection="row" key={note?.id}>
                                 <Card
                                     sx={{
-                                        maxWidth: 300,
-                                        boxShadow:
-                                            '0px 16px 24px rgba(0, 0, 0, 0.14), 0px 6px 30px rgba(0, 0, 0, 0.12), 0px 8px 10px rgba(0, 0, 0, 0.2);'
+                                        width: '300px',
+                                        height: '200px',
+                                        margin: '20px',
+                                        marginBottom: '0px !important'
                                     }}
                                 >
                                     <CardContent>
@@ -74,10 +75,7 @@ const Notes: React.FC = () => {
                                             {note.description}
                                         </Typography>
                                     </CardContent>
-                                    <CardActions sx={{ display: 'flex' }}>
-                                        <IconButton aria-label="favorite">
-                                            <FavoriteIcon />
-                                        </IconButton>
+                                    <CardActions sx={{ display: 'flex', height: '150px' }}>
                                         <IconButton onClick={() => handleEdit(note)}>
                                             <EditIcon />
                                         </IconButton>
