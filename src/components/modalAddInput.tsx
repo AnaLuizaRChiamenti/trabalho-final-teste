@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { updateUser } from '../store/modules/UsersSlice';
 import { addNewTask } from '../store/modules/UserLoggedSlice';
 import taskType from '../types/taskType';
+import { Alert } from '@mui/material';
 
 interface ModalInputsProps {
     openModal: boolean;
@@ -20,7 +21,8 @@ interface ModalInputsProps {
 
 const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, actionConfirm }) => {
     const dispatch = useAppDispatch();
-    const [task, setTask] = React.useState({} as taskType);
+    const [task, setTask] = useState({} as taskType);
+    const [alert, setAlert] = useState(false);
     const userLogged = useAppSelector(state => state.user.userLogged);
 
     useEffect(() => {
@@ -36,6 +38,11 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
     };
 
     const handleConfirm = () => {
+        if (!task.title) {
+            setAlert(true);
+            return;
+        }
+
         dispatch(
             addNewTask({
                 ...task,
@@ -100,6 +107,11 @@ const ModalInputs: React.FC<ModalInputsProps> = ({ openModal, actionCancel, acti
                         Confirmar
                     </Button>
                 </DialogActions>
+                {alert && (
+                    <Alert severity="warning" sx={{ mt: 2 }} onClose={() => setAlert(false)}>
+                        Por favor, escreva um recado!
+                    </Alert>
+                )}
             </Dialog>
         </Box>
     );
