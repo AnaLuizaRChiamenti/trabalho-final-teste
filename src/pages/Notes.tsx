@@ -1,7 +1,19 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Grid, Box, Typography, IconButton, Fab } from '@mui/material';
+import {
+    Grid,
+    Box,
+    Typography,
+    IconButton,
+    Fab,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    Button,
+    DialogActions
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,12 +25,16 @@ import ResponsiveAppBar from '../components/ResponsiveAppBar';
 import taskType from '../types/taskType';
 import { deleteTask } from '../store/modules/UserLoggedSlice';
 import ModalInputsEdit from '../components/modalEditar';
+import { useState } from 'react';
 
 const Notes: React.FC = () => {
-    const [openAdd, setOpenAdd] = React.useState(false);
-    const [openModalEdit, setOpenModalEdit] = React.useState(false);
+    const [openAdd, setOpenAdd] = useState(false);
+    const [openModalEdit, setOpenModalEdit] = useState(false);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [selectedNote, setSelectedNote] = useState<taskType | null>(null);
+
     const listTaks = useAppSelector(state => state.user.userLogged.tasks);
-    const [editedTaks, setEditedTaks] = React.useState<taskType>({} as taskType);
+    const [editedTaks, setEditedTaks] = useState<taskType>({} as taskType);
 
     const dispatch = useAppDispatch();
 
@@ -30,10 +46,6 @@ const Notes: React.FC = () => {
     };
     const openModalImput = () => {
         setOpenAdd(true);
-    };
-
-    const handleDelete = (item: taskType) => {
-        dispatch(deleteTask(item.id));
     };
 
     const handleEdit = (item: taskType) => {
@@ -48,6 +60,24 @@ const Notes: React.FC = () => {
 
     const addNotesEdit = () => {
         setOpenModalEdit(false);
+    };
+
+    const handleDelete = (item: taskType) => {
+        setSelectedNote(item);
+        setDeleteConfirmOpen(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (selectedNote) {
+            dispatch(deleteTask(selectedNote.id));
+            setDeleteConfirmOpen(false);
+            setSelectedNote(null);
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        setSelectedNote(null);
+        setDeleteConfirmOpen(false);
     };
 
     return (
@@ -94,6 +124,16 @@ const Notes: React.FC = () => {
                             </Card>
                         </Grid>
                     ))}
+                    <Dialog open={deleteConfirmOpen} onClose={handleDeleteCancel}>
+                        <DialogTitle>Confirmar exclusão</DialogTitle>
+                        <DialogContent>Tem certeza que deseja excluir o recado {selectedNote?.title}?</DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleDeleteCancel}>Cancelar</Button>
+                            <Button onClick={handleDeleteConfirm} color="error">
+                                Excluir
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Grid>
             </Box>
 
@@ -105,13 +145,10 @@ const Notes: React.FC = () => {
                     position: 'fixed',
                     right: '20px',
                     bottom: '20px',
-                    bgcolor: '#222',
-                    width: '80px',
-                    height: '80px',
-                    boxShadow: '5px 10px 20px rgba(0, 0, 0, 0.301), 5px 10px 20px rgba(0, 0, 0, 0.301);'
+                    bgcolor: '#222'
                 }}
             >
-                {<AddIcon fontSize="large" />}
+                <AddIcon />
             </Fab>
             {openModalEdit && (
                 <ModalInputsEdit

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addUser, selectAllUsers } from '../store/modules/UsersSlice';
@@ -18,6 +18,8 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const [errorRepassword, setErrorRepassword] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
+
     const users = useAppSelector(selectAllUsers);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -78,11 +80,21 @@ const Form: React.FC<FormProps> = ({ mode, textButton }) => {
                 alert('E-mail já cadastrado');
                 return;
             }
+
             dispatch(addUser(newUser));
         }
     }
     return (
-        <Box component="form" marginTop={1} onSubmit={ev => handleSubmit(ev)} margin={2}>
+        <Box
+            component="form"
+            marginTop={1}
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            width="80%"
+            onSubmit={ev => handleSubmit(ev)}
+            margin={2}
+        >
             <TextField
                 error={errorEmail}
                 helperText={errorEmail ? 'E-mail inválido' : ''}
